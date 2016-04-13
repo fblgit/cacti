@@ -1,4 +1,4 @@
-#name of container: ubuntu-base
+#name of container: ubuntu-cacti
 #version of container 0.1
 FROM fblgit/ubuntu-base
 MAINTAINER FBLGIT
