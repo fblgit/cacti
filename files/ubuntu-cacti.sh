@@ -1,7 +1,6 @@
 #!/bin/bash
 /data/ubuntu-apt.sh
 DEBIAN_FRONTEND=noninteractive apt-get -qy install mysql-server cacti-spine
-VOLUME /data
 cp /etc/cacti/debian.php /data/debian.php.org
 cp /etc/cacti/spine.conf /data/spine.conf.org
 echo "<?php
@@ -20,5 +19,5 @@ DB_Pass         $CACTI_DB_PASSWORD
 DB_Port         $CACTI_DB_PORT">/data/spine.conf
 cp /data/spine.conf /etc/cacti/
 cp /data/debian.php /etc/cacti/
-cron
 /etc/init.d/apache2 start
+cron -f
