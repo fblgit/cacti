@@ -17,7 +17,7 @@ DB_Database     $CACTI_DB_NAME
 DB_User         $CACTI_DB_USER
 DB_Pass         $CACTI_DB_PASSWORD
 DB_Port         $CACTI_DB_PORT">/data/spine.conf
-service mysql start
+/etc/init.d/mysql start
 sleep 3
 if [ "$CACTI_DB_USER" -ne "" ]; then
   cp /data/spine.conf /etc/cacti/
