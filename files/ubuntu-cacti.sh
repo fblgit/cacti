@@ -19,19 +19,23 @@ DB_Pass         $CACTI_DB_PASSWORD
 DB_Port         $CACTI_DB_PORT">/data/spine.conf
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 service rsyslog start
-cron -f
-exec mysqld_safe
-sleep 3
+service apache2 start
+service mysql start
 if [[ "$CACTI_DB_HOST" -eq "" ]]; then
   if [[ ! -f /data/.granted ]] ; then
+    sleep 5
     cp /data/spine.conf /etc/cacti/
     cp /data/debian.php /etc/cacti/
-    GRANT="GRANT ALL PRIVILEGES ON $CACTI_DB_HOST.* TO $CACTI_DB_USER@% IDENTIFIED BY \'$CACTI_DB_PASSWORD\';"
-    mysql -u root << EOF
-    $GRANT
-    create database fbl;
-    EOF
+    GRANT="GRANT ALL PRIVILEGES ON $CACTI_DB_HOST.* TO $CACTI_DB_USER@% IDENTIFIED BY '$CACTI_DB_PASSWORD';"
+    echo $GRANT
+    mysql << EOF
+$GRANT
+FLUSH PRIVILEGES;
+CREATE DATABASE FBL;
+EOF
     touch /data/.granted
   fi
 fi
-/usr/sbin/apache2ctl -D FOREGROUND
+echo "Deliver to Cron"
+cron -f
+echo "Cron Running"
