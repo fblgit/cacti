@@ -31,12 +31,12 @@ if [[ "$CACTI_DB_HOST" -eq "" ]]; then
     sleep 5
     cp /data/spine.conf /etc/cacti/
     cp /data/debian.php /etc/cacti/
-    GRANT="GRANT ALL PRIVILEGES ON $DB_NAME.* TO $DB_USER@% IDENTIFIED BY '$DB_PASS';"
+    GRANT="GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';"
     echo $GRANT
     mysql << EOF
+CREATE DATABASE cacti;
 $GRANT
 FLUSH PRIVILEGES;
-CREATE DATABASE cacti;
 EOF
     touch /data/.granted
   fi
