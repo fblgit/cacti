@@ -3,6 +3,7 @@
 FROM fblgit/ubuntu-base
 MAINTAINER FBLGIT
 VOLUME /var/lib/cacti/rra
+RUN sed -i '/session    required   pam_loginuid.so/c\#session    required   pam_loginuid.so' /etc/pam.d/crond
 COPY files/ubuntu-cacti.sh /data/ubuntu-cacti.sh
 COPY files/start-cacti.sh /data/start-cacti.sh
 RUN chmod +x /data/ubuntu-cacti.sh
