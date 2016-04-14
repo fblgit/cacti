@@ -23,5 +23,4 @@ if [ -v "$CACTI_DB_HOST" ]; then
 fi
 
 /etc/init.d/apache2 start
-/etc/init.d/mysqld start
-cron -f
+/etc/init.d/mysql start
