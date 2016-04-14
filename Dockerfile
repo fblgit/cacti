@@ -5,4 +5,5 @@ MAINTAINER FBLGIT
 VOLUME /var/lib/cacti/rra
 COPY files/ubuntu-cacti.sh /data/ubuntu-cacti.sh
 RUN chmod +x /data/ubuntu-cacti.sh
-CMD ["/data/ubuntu-cacti.sh"]
+ONBUILD ENTRYPOINT ["/data/ubuntu-cacti.sh"]
+CMD ["mysqld"]

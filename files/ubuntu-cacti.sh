@@ -17,11 +17,18 @@ DB_Database     $CACTI_DB_NAME
 DB_User         $CACTI_DB_USER
 DB_Pass         $CACTI_DB_PASSWORD
 DB_Port         $CACTI_DB_PORT">/data/spine.conf
-if [ -v "$CACTI_DB_HOST" ]; then
+service mysql start
+sleep 3
+if [ "$CACTI_DB_USER" -ne "" ]; then
   cp /data/spine.conf /etc/cacti/
   cp /data/debian.php /etc/cacti/
+  GRANT="GRANT ALL PRIVILEGES ON $CACTI_DB_HOST.* TO $CACTI_DB_USER@% IDENTIFIED BY \'$CACTI_DB_PASSWORD\';"
+  mysql -u root << EOF
+  $GRANT
+  EOF
+  sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 fi
 
 /etc/init.d/apache2 start
-/etc/init.d/mysql start
+
 cron -f
