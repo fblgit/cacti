@@ -19,6 +19,7 @@ DB_Pass         $CACTI_DB_PASSWORD
 DB_Port         $CACTI_DB_PORT">/data/spine.conf
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 /etc/init.d/mysql start
+service rsyslog start
 sleep 3
 if [[ "$CACTI_DB_HOST" -eq "" ]]; then
   if [[ ! -f /data/.granted ]] ; then
@@ -32,3 +33,5 @@ if [[ "$CACTI_DB_HOST" -eq "" ]]; then
     touch /data/.granted
   fi
 fi
+/etc/init.d/apache2 start
+cron
