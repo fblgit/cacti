@@ -26,11 +26,11 @@ sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 service rsyslog start
 if [[ "$DB_HOST" -eq "localhost" ]]; then
   service mysql start
-else
-  mysql -u $DB_HOST -p$DB_PASS -P $DB_PORT $DB_NAME < /data/cacti.sql
-  fi
 fi
 DEBIAN_FRONTEND=noninteractive apt-get -qy install cacti-spine
 service apache2 start
+if [[ "$DB_STARTUP" -eq "true" ]]; then
+  mysql -u $DB_USER -p$DB_PASS -P $DB_PORT -h $DB_HOST $DB_NAME < /data/cacti.sql
+fi
 echo "Foreground to Cron"
 cron -f -L 8
