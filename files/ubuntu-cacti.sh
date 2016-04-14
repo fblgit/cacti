@@ -28,7 +28,22 @@ if [[ "$DB_HOST" -eq "localhost" ]]; then
   service mysql start
 fi
 DEBIAN_FRONTEND=noninteractive apt-get -qy install cacti-spine
-service apache2 start
+if [[ -f /var/lib/mysql/.cacti ]]; then
+  cp /var/lib/mysql/.cacti /etc/cacti/debian.php
+fi
+fi [[ -f /var/lib/mysql/.spine ]]; then
+  cp /var/lib/mysql/.spine /etc/cacti/spine.conf
+fi
+if [[ "$DB_HOST" -eq "localhost" ]]; then
+  cp /etc/cacti/debian.php /var/lib/mysql/.cacti
+  cp /etc/cacti/spine.conf /var/lib/mysql/.spine
+else
+  cp /data/spine.conf /etc/cacti/
+  cp /data/debian.php /etc/cacti/
+  cp /data/spine.conf /var/lib/mysql/.spine
+  cp /data/debian.php /var/lib/mysql/.cacti
+fi
+service apache2 restart
 if [[ "$DB_STARTUP" -eq "true" ]]; then
   mysql -u $DB_USER -p$DB_PASS -P $DB_PORT -h $DB_HOST $DB_NAME < /data/cacti.sql
 fi
