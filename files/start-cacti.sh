@@ -1,4 +1,4 @@
 #!/bin/bash
-/etc/init.d/mysql restart
-/etc/init.d/apache2 restart
+/etc/init.d/mysql start
+/etc/init.d/apache2 start
 cron -f
