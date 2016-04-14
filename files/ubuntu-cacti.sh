@@ -1,6 +1,6 @@
 #!/bin/bash
 /data/ubuntu-apt.sh
-DEBIAN_FRONTEND=noninteractive apt-get -qy install mysql-server cacti-spine
+DEBIAN_FRONTEND=noninteractive apt-get -qy install mysql-server apache2
 cp /etc/cacti/debian.php /data/debian.php.org
 cp /etc/cacti/spine.conf /data/spine.conf.org
 DB_HOST=${$CACTI_DB_HOST:-127.0.0.1}
@@ -24,11 +24,12 @@ DB_Pass         $DB_PASS
 DB_Port         $DB_PORT">/data/spine.conf
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 service rsyslog start
-service apache2 start
 service mysql start
+sleep 3
+service apache2 start
+DEBIAN_FRONTEND=noninteractive apt-get -qy install cacti-spine
 if [[ "$CACTI_DB_HOST" -eq "" ]]; then
   if [[ ! -f /data/.granted ]] ; then
-    sleep 5
     cp /data/spine.conf /etc/cacti/
     cp /data/debian.php /etc/cacti/
     GRANT="GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';"
