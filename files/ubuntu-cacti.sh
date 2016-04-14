@@ -17,6 +17,7 @@ DB_Database     $CACTI_DB_NAME
 DB_User         $CACTI_DB_USER
 DB_Pass         $CACTI_DB_PASSWORD
 DB_Port         $CACTI_DB_PORT">/data/spine.conf
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 /etc/init.d/mysql start
 sleep 3
 if [ "$CACTI_DB_USER" -ne "" ]; then
@@ -26,7 +27,6 @@ if [ "$CACTI_DB_USER" -ne "" ]; then
   mysql -u root << EOF
   $GRANT
   EOF
-  sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 fi
 
 /etc/init.d/apache2 start
