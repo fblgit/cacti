@@ -24,10 +24,13 @@ DB_Pass         $DB_PASS
 DB_Port         $DB_PORT">/data/spine.conf
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 service rsyslog start
-service mysql start
-sleep 3
+if [[ "$DB_HOST" -eq "localhost" ]]; then
+  service mysql start
+else
+  mysql -u $DB_HOST -p$DB_PASS -P $DB_PORT $DB_NAME < /data/cacti.sql
+  fi
+fi
 DEBIAN_FRONTEND=noninteractive apt-get -qy install cacti-spine
 service apache2 start
-echo "Deliver to Cron"
-cron -f
-echo "Cron Running"
+echo "Foreground to Cron"
+cron -f -L 8
