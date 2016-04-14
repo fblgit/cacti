@@ -17,7 +17,11 @@ DB_Database     $CACTI_DB_NAME
 DB_User         $CACTI_DB_USER
 DB_Pass         $CACTI_DB_PASSWORD
 DB_Port         $CACTI_DB_PORT">/data/spine.conf
-cp /data/spine.conf /etc/cacti/
-cp /data/debian.php /etc/cacti/
+if [ -v "$CACTI_DB_HOST" ]; then
+  cp /data/spine.conf /etc/cacti/
+  cp /data/debian.php /etc/cacti/
+fi
+
 /etc/init.d/apache2 start
+/etc/init.d/mysqld start
 cron -f
