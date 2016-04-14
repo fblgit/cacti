@@ -3,11 +3,11 @@
 DEBIAN_FRONTEND=noninteractive apt-get -qy install mysql-server cacti-spine
 cp /etc/cacti/debian.php /data/debian.php.org
 cp /etc/cacti/spine.conf /data/spine.conf.org
-DB_HOST=${$CACTI_DB_HOST:127.0.0.1}
-DB_PORT=${CACTI_DB_PORT:3306}
-DB_NAME=${CACTI_DB_NAME:cacti}
-DB_USER=${CACTI_DB_USER:cacti}
-DB_PASS=${CACTI_DB_PASSWORD:CACTIDocker}
+DB_HOST=${$CACTI_DB_HOST:-127.0.0.1}
+DB_PORT=${CACTI_DB_PORT:-3306}
+DB_NAME=${CACTI_DB_NAME:-cacti}
+DB_USER=${CACTI_DB_USER:-cacti}
+DB_PASS=${CACTI_DB_PASSWORD:-FBLCACTIDocker}
 echo "<?php
 \$database_type = \"mysql\";
 \$database_default = \"$DB_NAME\";
