@@ -27,6 +27,7 @@ if [[ "$CACTI_DB_HOST" -eq "" ]]; then
     GRANT="GRANT ALL PRIVILEGES ON $CACTI_DB_HOST.* TO $CACTI_DB_USER@% IDENTIFIED BY \'$CACTI_DB_PASSWORD\';"
     mysql -u root << EOF
     $GRANT
+    create database fbl;
     EOF
     touch /data/.granted
   fi
