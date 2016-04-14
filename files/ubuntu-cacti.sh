@@ -30,3 +30,4 @@ if [ "$CACTI_DB_USER" -ne "" ]; then
 fi
 
 /etc/init.d/apache2 start
+cron -f
