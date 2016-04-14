@@ -42,10 +42,11 @@ else
   cp /data/debian.php /etc/cacti/
   cp /data/spine.conf /var/lib/mysql/.spine
   cp /data/debian.php /var/lib/mysql/.cacti
+  if [[ "$DB_STARTUP" -eq "YES" ]]; then
+    mysql -u $DB_USER -p$DB_PASS -P $DB_PORT -h $DB_HOST $DB_NAME < /data/cacti.sql
+  fi
 fi
 service apache2 restart
-if [[ "$DB_STARTUP" -eq "true" ]]; then
-  mysql -u $DB_USER -p$DB_PASS -P $DB_PORT -h $DB_HOST $DB_NAME < /data/cacti.sql
-fi
+
 echo "Foreground to Cron"
 cron -f -L 8
