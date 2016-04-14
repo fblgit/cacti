@@ -31,7 +31,7 @@ DEBIAN_FRONTEND=noninteractive apt-get -qy install cacti-spine
 if [[ -f /var/lib/mysql/.cacti ]]; then
   cp /var/lib/mysql/.cacti /etc/cacti/debian.php
 fi
-fi [[ -f /var/lib/mysql/.spine ]]; then
+if [[ -f /var/lib/mysql/.spine ]]; then
   cp /var/lib/mysql/.spine /etc/cacti/spine.conf
 fi
 if [[ "$DB_HOST" -eq "localhost" ]]; then
