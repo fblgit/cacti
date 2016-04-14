@@ -34,7 +34,7 @@ fi
 if [[ -f /var/lib/mysql/.spine ]]; then
   cp /var/lib/mysql/.spine /etc/cacti/spine.conf
 fi
-if [[ "$DB_HOST" -eq "localhost" ]]; then
+if [[ "$CACTI_DB_HOST" -eq "" ]]; then
   cp /etc/cacti/debian.php /var/lib/mysql/.cacti
   cp /etc/cacti/spine.conf /var/lib/mysql/.spine
 else
