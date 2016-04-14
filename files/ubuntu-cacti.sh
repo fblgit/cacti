@@ -20,14 +20,14 @@ DB_Port         $CACTI_DB_PORT">/data/spine.conf
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
 /etc/init.d/mysql start
 sleep 3
-if [ "$CACTI_DB_USER" -ne "" ]; then
-  cp /data/spine.conf /etc/cacti/
-  cp /data/debian.php /etc/cacti/
-  GRANT="GRANT ALL PRIVILEGES ON $CACTI_DB_HOST.* TO $CACTI_DB_USER@% IDENTIFIED BY \'$CACTI_DB_PASSWORD\';"
-  mysql -u root << EOF
-  $GRANT
-  EOF
+if [[ "$CACTI_DB_HOST" -eq "" ]]; then
+  if [[ ! -f /data/.granted ]] ; then
+    cp /data/spine.conf /etc/cacti/
+    cp /data/debian.php /etc/cacti/
+    GRANT="GRANT ALL PRIVILEGES ON $CACTI_DB_HOST.* TO $CACTI_DB_USER@% IDENTIFIED BY \'$CACTI_DB_PASSWORD\';"
+    mysql -u root << EOF
+    $GRANT
+    EOF
+    touch /data/.granted
+  fi
 fi
-
-/etc/init.d/apache2 start
-cron -f
